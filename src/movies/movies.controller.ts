@@ -9,27 +9,30 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { MoviesService } from './movies.service';
 
 @Controller()
 export class MoviesController {
+  constructor(private readonly MoviesService: MoviesService) {}
+
   @Get('all')
   getAll() {
-    return 'This will return all movies.';
+    return this.MoviesService.getAll();
   }
 
-  @Get('search')
-  searchOne(@Query('year') searchingYear: string) {
-    return `This will return movie that filmed after ${searchingYear}`;
-  }
+  // @Get('search')
+  // searchOne(@Query('year') searchingYear: string) {
+  //   return `This will return movie that filmed after ${searchingYear}`;
+  // }
 
   @Get(':id')
   getOne(@Param('id') movieId: string) {
-    return `This will return one movie with the id: ${movieId}`;
+    return this.MoviesService.getOne(movieId);
   }
 
   @Post()
   createOne(@Body() movieData) {
-    return movieData;
+    return this.MoviesService.createOne(movieData);
   }
 
   @Put(':id')
@@ -47,6 +50,6 @@ export class MoviesController {
 
   @Delete(':id')
   removeOne(@Param('id') movieId: string) {
-    return `This will return removed movie with id: ${movieId}`;
+    return this.MoviesService.deleteOne(movieId);
   }
 }
